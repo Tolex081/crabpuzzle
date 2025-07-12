@@ -1,0 +1,566 @@
+:root {
+    /* Custom Color Palette (Dark Mode Defaults) */
+    --color-purple: #B753FF;
+    --color-orange: #FF955E;
+    --color-green: #B0FF6F;
+    --color-blue: #61C3FF;
+    --color-pink: #FF54D7;
+
+    /* General Dark Mode Theming */
+    --background-dark: #1A1A2E; /* Deep dark blue for body */
+    --card-background: #252A41; /* Darker blue-gray for cards/modals */
+    --text-light: #E0E0E0;      /* Light text for contrast */
+    --text-muted: #A0A0A0;      /* Muted text for subtle details */
+    --border-dark: #3B3F5C;     /* Darker border for elements */
+    --shadow-dark: rgba(0, 0, 0, 0.5); /* Stronger shadow */
+    --input-bg: #1F2336;        /* Input background */
+
+    /* Specific Element Colors */
+    --header-title-color: var(--color-pink); /* Use pink for main title */
+    --tagline-color: var(--text-light);
+    --user-id-color: var(--color-green); /* Green for user ID */
+    --button-bg: var(--color-purple);
+    --button-hover-bg: #8c25cc; /* Darker purple */
+    --progress-fill: var(--color-purple);
+    --progress-track: var(--border-dark);
+    --puzzle-border: var(--color-orange); /* Orange border for puzzle */
+    --tile-border-unclaimed: rgba(255, 255, 255, 0.08); /* Subtle white lines for dark */
+    --tile-overlay-unclaimed: rgba(0, 0, 0, 0.15); /* Dark overlay */
+    --vip-gold: #FFD700; /* Standard gold for VIP */
+    --popup-pfp-border: var(--color-purple);
+    --modal-close-color: var(--text-light);
+}
+
+/* New Particles Background */
+.particles-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Crucial to prevent scrollbars from particles */
+    z-index: -1; /* Send to back */
+    background-color: var(--background-dark); /* Base dark background */
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%; /* For circles */
+    opacity: 0; /* Start invisible */
+    animation: particleMove 20s infinite ease-in-out, particleFade 20s infinite ease-in-out; /* Main animations */
+    pointer-events: none; /* Do not interfere with mouse events */
+}
+
+/* Optional: For cubes instead of circles, remove border-radius: 50% from .particle */
+/*
+.particle.cube {
+    border-radius: 0;
+}
+*/
+
+/* Different animation delays and durations for a more organic feel */
+.particle:nth-child(even) {
+    animation-delay: -5s; /* Start some animations earlier */
+    animation-duration: 25s;
+    background-color: var(--color-purple);
+    box-shadow: 0 0 15px var(--color-purple);
+}
+
+.particle:nth-child(odd) {
+    animation-delay: -10s;
+    animation-duration: 20s;
+    background-color: var(--color-pink);
+    box-shadow: 0 0 15px var(--color-pink);
+}
+
+.particle:nth-child(3n) {
+    animation-delay: -15s;
+    animation-duration: 30s;
+    background-color: var(--color-blue);
+    box-shadow: 0 0 15px var(--color-blue);
+}
+
+.particle:nth-child(5n) {
+    animation-delay: -7s;
+    animation-duration: 18s;
+    background-color: var(--color-orange);
+    box-shadow: 0 0 15px var(--color-orange);
+}
+
+.particle:nth-child(7n) {
+    animation-delay: -12s;
+    animation-duration: 22s;
+    background-color: var(--color-green);
+    box-shadow: 0 0 15px var(--color-green);
+}
+
+/* Base animation for movement */
+@keyframes particleMove {
+    0% {
+        transform: translate(var(--initial-x), var(--initial-y)) scale(0.5);
+    }
+    25% {
+        transform: translate(calc(var(--initial-x) + 50vw), calc(var(--initial-y) + 50vh)) scale(1.2);
+    }
+    50% {
+        transform: translate(calc(var(--initial-x) - 30vw), calc(var(--initial-y) + 20vh)) scale(0.8);
+    }
+    75% {
+        transform: translate(calc(var(--initial-x) + 10vw), calc(var(--initial-y) - 40vh)) scale(1.5);
+    }
+    100% {
+        transform: translate(var(--initial-x), var(--initial-y)) scale(0.5);
+    }
+}
+
+/* Animation for fading in and out */
+@keyframes particleFade {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 0.3; } /* Slightly visible, not fully opaque */
+    50% { opacity: 0.6; } /* Max opacity */
+}
+
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: transparent; /* Body background is now transparent to show particles */
+    color: var(--text-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    transition: color 0.3s ease; /* No background transition now */
+    position: relative; /* For z-index context */
+    z-index: 1; /* Keep content above animation */
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px var(--shadow-dark);
+    max-width: 500px; /* Constrain header width */
+    width: 90%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2; /* Keep header above puzzle on smaller screens */
+    border: 1px solid var(--border-dark); /* Subtle border */
+}
+
+h1 {
+    color: var(--header-title-color);
+    margin-bottom: 5px;
+    font-size: 2.5em; /* Larger title */
+    text-shadow: 0 0 5px var(--color-pink); /* Subtle glow */
+}
+
+.tagline {
+    font-style: italic;
+    color: var(--tagline-color);
+    margin-bottom: 15px;
+}
+
+.user-id {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85em;
+    color: var(--user-id-color);
+    background-color: rgba(0,0,0,0.2);
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block; /* To make background fit content */
+}
+
+main {
+    width: 100%;
+    max-width: 1000px; /* Limits the puzzle container width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 50px; /* Space for claim button */
+    position: relative;
+    z-index: 1;
+}
+
+.info-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; /* Space between progress bar and button, if they were side-by-side */
+    margin-bottom: 20px; /* Space between info section and puzzle */
+    padding: 15px;
+    background-color: var(--card-background);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--shadow-dark);
+    box-sizing: border-box;
+    border: 1px solid var(--border-dark);
+}
+
+#progress-bar-container {
+    flex-grow: 1;
+    background-color: var(--progress-track);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 35px; /* Slightly taller */
+    position: relative;
+    display: flex; /* For centering text */
+    align-items: center;
+    width: 50%;
+}
+
+#progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--progress-fill);
+    border-radius: 8px; /* Match container */
+    transition: width 0.5s ease-in-out, background-color 0.3s ease;
+    position: absolute; /* Allows text to overlay */
+    left: 0;
+    top: 0;
+}
+
+#progress-text, #progress-percentage {
+    position: relative; /* Position text above fill */
+    z-index: 1;
+    color: var(--text-light); /* Ensure text is visible */
+    font-weight: bold;
+    font-size: 0.95em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Subtle shadow for readability */
+}
+
+#progress-text {
+    flex-grow: 1; /* Takes up left space */
+    text-align: center;
+    padding-left: 10px; /* Keep text from edge */
+}
+
+#progress-percentage {
+    padding-right: 10px; /* Keep text from edge */
+}
+
+
+#puzzle-container {
+    width: 100%; /* Responsive width */
+    max-width: 1000px; /* Max size of the master image */
+    aspect-ratio: 1000 / 320; /* Maintain aspect ratio of master image */
+    background-image: url('now2.png'); /* Updated image name */
+    background-size: contain; /* Ensures the whole image is visible */
+    background-repeat: no-repeat;
+    background-position: center;
+    display: grid;
+    /* Grid template columns/rows will be set by JS dynamically for responsiveness */
+    border: 3px solid var(--puzzle-border); /* Thicker, vibrant border */
+    border-radius: 15px; /* Rounded corners for the puzzle */
+    box-shadow: 0 10px 25px var(--shadow-dark);
+    position: relative;
+    overflow: hidden; /* Important for clean edges */
+    box-sizing: border-box; /* Include padding/border in width/height */
+}
+
+.puzzle-tile {
+    width: 100%; /* Will be set by JS, but ensures it fills grid cell */
+    height: 100%; /* Will be set by JS, but ensures it fills grid cell */
+    box-sizing: border-box;
+    border: 0.5px solid var(--tile-border-unclaimed); /* Subtle grid lines */
+    background-color: var(--tile-overlay-unclaimed); /* Slight translucent overlay */
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.1s ease-out, background-color 0.3s ease;
+}
+
+.puzzle-tile:not(.claimed):hover {
+    transform: scale(1.05);
+    z-index: 10;
+    box-shadow: 0 0 10px var(--color-blue); /* Blue glow on hover */
+    border-color: var(--color-blue);
+    background-color: rgba(97, 195, 255, 0.2); /* Lighter blue overlay */
+}
+
+.puzzle-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    mix-blend-mode: luminosity; /* Good for blending PFPs on dark background */
+    opacity: 0.8; /* Adjust for blending */
+    transition: opacity 0.3s ease;
+}
+
+.puzzle-tile.claimed img:hover {
+    opacity: 1;
+    mix-blend-mode: normal;
+}
+
+.puzzle-tile.vip {
+    border: 2px solid var(--vip-gold);
+    box-shadow: 0 0 12px var(--vip-gold); /* Stronger gold glow */
+}
+
+.vip-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: var(--vip-gold);
+    color: var(--background-dark); /* Dark text on gold */
+    font-size: 0.6em;
+    padding: 2px 4px;
+    border-radius: 3px;
+    z-index: 1;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+#claim-tile-btn {
+    padding: 15px 30px;
+    background: linear-gradient(45deg, var(--color-purple), var(--color-pink)); /* Gradient button */
+    color: white;
+    border: none;
+    border-radius: 30px; /* Pill shape */
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 30px; /* Space below puzzle */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#claim-tile-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.6);
+    background: linear-gradient(45deg, #8c25cc, #d130ae); /* Darker gradient on hover */
+}
+
+/* Modals (Claim and Pop-up) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8); /* Darker, more opaque overlay */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--card-background);
+    margin: auto;
+    padding: 30px;
+    border: 2px solid var(--color-blue); /* Blue border for modals */
+    border-radius: 15px;
+    width: 90%;
+    max-width: 550px; /* Slightly wider modal */
+    box-shadow: 0 10px 30px var(--shadow-dark);
+    position: relative;
+    animation: fadeIn 0.3s forwards;
+    color: var(--text-light);
+    box-sizing: border-box;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-50px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.close-button {
+    color: var(--modal-close-color);
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--color-pink); /* Pink on hover */
+    text-decoration: none;
+}
+
+#claim-form h2 {
+    color: var(--color-orange); /* Orange for modal title */
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+#claim-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-light);
+}
+
+#claim-form input[type="text"],
+#claim-form input[type="url"],
+#claim-form textarea {
+    width: calc(100% - 24px); /* Account for padding + border */
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    font-size: 1em;
+    background-color: var(--input-bg);
+    color: var(--text-light);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+#claim-form input:focus, #claim-form textarea:focus {
+    border-color: var(--color-blue); /* Highlight on focus */
+    outline: none;
+    box-shadow: 0 0 8px rgba(97, 195, 255, 0.4);
+}
+
+#claim-form textarea {
+    resize: vertical;
+    min-height: 100px;
+    max-height: 200px;
+}
+
+#claim-form button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(90deg, var(--color-blue), var(--color-green)); /* Blue-Green gradient */
+    color: var(--background-dark); /* Dark text on bright button */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+#claim-form button[type="submit"]:hover {
+    background: linear-gradient(90deg, #4da4d9, #8dc85b); /* Darker gradient on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.tile-popup-content {
+    text-align: center;
+}
+
+#popup-pfp {
+    width: 130px; /* Larger PFP in popup */
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 5px solid var(--popup-pfp-border);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Stronger shadow */
+    transition: all 0.3s ease;
+}
+
+#popup-username {
+    color: var(--color-purple); /* Purple for popup username */
+    margin-bottom: 10px;
+    font-size: 1.5em;
+}
+
+#popup-message {
+    font-style: italic;
+    color: var(--text-muted); /* Muted text for message */
+    margin-bottom: 20px;
+    line-height: 1.6;
+    padding: 0 10px;
+}
+
+#popup-date {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    header {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    .info-section {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    #progress-bar-container {
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    #progress-text, #progress-percentage {
+        font-size: 0.9em;
+    }
+
+    #claim-tile-btn {
+        width: 90%;
+        padding: 12px 20px;
+        font-size: 1.1em;
+    }
+
+    .modal-content {
+        padding: 20px;
+        width: 95%;
+    }
+
+    #claim-form input, #claim-form textarea {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    #claim-form button[type="submit"] {
+        padding: 12px;
+        font-size: 1.1em;
+    }
+
+    #popup-pfp {
+        width: 100px;
+        height: 100px;
+    }
+
+    #popup-username {
+        font-size: 1.3em;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .user-id {
+        font-size: 0.75em;
+    }
+
+    #claim-tile-btn {
+        font-size: 1em;
+        padding: 10px 15px;
+    }
+
+    .modal-content {
+        padding: 15px;
+    }
+}

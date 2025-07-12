@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Succinct Puzzle of Faces</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="particles-background"></div>
+
+    <header>
+        <h1>Succinct Puzzle of Faces</h1>
+        <p class="tagline">One Community. One Image. Many Faces.</p>
+    </header>
+
+    <main>
+        <section class="info-section">
+            <div id="progress-bar-container">
+                <div id="progress-bar-fill"></div>
+                <span id="progress-text">📸 0 / 200 Faces Collected</span>
+                <span id="progress-percentage">0.0%</span>
+            </div>
+        </section>
+
+        <section id="puzzle-container">
+            <!-- Tiles will be dynamically generated here by JavaScript -->
+        </section>
+
+        <button id="claim-tile-btn">Claim Your Tile!</button>
+    </main>
+
+    <!-- Claim Tile Modal -->
+    <div id="claim-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Claim Your Tile!</h2>
+            <form id="claim-form">
+                <label for="username">Your Username:</label>
+                <input type="text" id="username" required>
+
+                <label for="message">Your Succinct Memory/Message:</label>
+                <textarea id="message" maxlength="500" placeholder="e.g., I AM ALL IN SUCCINCT." required></textarea>
+
+                <label for="pfp-url">Profile Picture URL</label>
+                <input type="url" id="pfp-url" placeholder="https://unavatar.io/twitter/yourhandle" required>
+
+                <button type="submit">Submit My Tile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tile Popup Modal -->
+    <div id="tile-popup" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="tile-popup-content">
+                <img id="popup-pfp" src="" alt="User PFP">
+                <h3 id="popup-username"></h3>
+                <p id="popup-message"></p>
+                <small id="popup-date"></small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs (using type="module" for modern imports) -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
